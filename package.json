@@ -1,0 +1,23 @@
+{
+  "name": "@nathanstilwell/time",
+  "version": "0.1.0",
+  "description": "Utility for basic time calculations",
+  "main": "dist/index.js",
+  "scripts": {
+    "test": "jest",
+    "build": "tsc"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nathanstilwell/time.git"
+  },
+  "author": "Nathan Stilwell",
+  "license": "Unlicense",
+  "bugs": {
+    "url": "https://github.com/nathanstilwell/time/issues"
+  },
+  "homepage": "https://github.com/nathanstilwell/time#readme",
+  "devDependencies": {
+    "typescript": "4.6.3"
+  }
+}
