@@ -1,3 +1,8 @@
 {
-  "extends": "@cockroachlabs/eslint-config"
+  "extends": "@cockroachlabs/eslint-config",
+  "globals": {
+    "module": true,
+    "describe": true,
+    "test": true
+  }
 }
