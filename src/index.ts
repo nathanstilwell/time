@@ -1,10 +1,6 @@
-
 // const t = (d:string) => new Date(d).getTime();
 
 // const daysBetween = (from: string, to: string):number => (t(to) - t(from)) / day;
-
-
-
 
 const TIME = {
   // JavaScript dates are calculated in milliseconds as a base
@@ -62,7 +58,6 @@ const TIME = {
   get century() {
     return 100 * this.year;
   },
-}
-
+};
 
 export default TIME;
