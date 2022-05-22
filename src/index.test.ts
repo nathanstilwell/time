@@ -1,4 +1,4 @@
-import TIME, { invalidDateString, d, t } from "./index";
+import TIME, { invalidDateString, d, t, timeDiff } from "./index";
 
 const { dateFromString, timeFromString } = TIME;
 
@@ -139,5 +139,24 @@ describe("utility methods", () => {
       expect(t("6/6/6")).toBe(1149566400000));
     test("returns undefined given an invalid date string", () =>
       expect(t("nope")).toBe(undefined));
+  });
+
+  describe("timeDiff", () => {
+    const now = t("2022-06-30T00:00:00+05:00") || 0;
+    const diff = timeDiff(now);
+
+    test('returns the difference in milliseconds between a historic date and "now"', () => {
+      const diffDate = d("2022-05-22T00:00:00+05:00") || new Date();
+      const result = diff(diffDate);
+      const expected = 3369600000;
+      expect(result).toBe(expected);
+    });
+
+    test('returns a negative number for a date after "now"', () => {
+      const diffDate = d("2022-07-01T00:00:00+05:00") || new Date();
+      const result = diff(diffDate);
+      const expected = -86400000;
+      expect(result).toBe(expected);
+    });
   });
 });
