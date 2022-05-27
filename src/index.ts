@@ -2,6 +2,10 @@ const CONSTANTS = {
   humanOffset: 1,
 };
 
+/**
+ * T is an object containing precalculated number of milliseconds
+ * of various time measurements
+ */
 export const T = {
   second: 1000,
   minute: 60000,
@@ -63,6 +67,13 @@ export const t = (date: string): number | undefined => d(date)?.getTime();
  * and takes a Date object in the second call to return the difference in milliseconds between
  * "now" and the given date. As a curried function, this allows for "now" to be partially applied
  * for testing or getting the difference between a fixed date.
+ * @example
+ *  timeDiff(new Date().getTime())(new Date("10 SEP 1991 00:00:00Z"));
+ *
+ *  const episodeIV = d("25 MAY 1977") || new Date();
+ *  const episodeV = d("21 MAY 1980") || new Date();
+ *  timeDiff(episodeV.getTime())(episodeIV); // 94348800000
+ *
  * @function
  * @name timeDiff
  * @param {Date} historicDate
@@ -75,6 +86,7 @@ export const timeDiff = (now: number) => (historicDate: Date) =>
  * @function
  * @name daysSince
  * @param {Date} when
+ * @param {number} [now=Date.now()]
  * @returns {number} Number of days since supplied date
  */
 export const daysSince = (when: Date, now: number = Date.now()) =>

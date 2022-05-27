@@ -1,4 +1,4 @@
-import TIME, { invalidDateString, d, t, timeDiff } from "./index";
+import TIME, { invalidDateString, d, t, timeDiff, daysSince } from "./index";
 
 const { dateFromString, timeFromString } = TIME;
 
@@ -159,4 +159,27 @@ describe("utility methods", () => {
       expect(result).toBe(expected);
     });
   });
+});
+
+describe("Comparing functions", () => {
+  describe("daysSince fn", () => {
+    const now = t("26 MAY 2022") || 0;
+
+    test("should calculate days between two valid dates", () => {
+      const then = d("05 SEP 1979") || new Date(); // 15629
+      const result = daysSince(then, now);
+      const expected = 15605;
+      expect(result).toBe(expected);
+    });
+
+    test("should return negative days for a future date", () => {
+      const then = d("30 JUN 2022") || new Date();
+      const result = daysSince(then, now);
+      const expected = -34;
+      expect(result).toBe(expected);
+    });
+  });
+
+  // describe("daysFrom fn", () => {});
+  // describe("daysBetween fn", () => {});
 });
