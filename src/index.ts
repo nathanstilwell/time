@@ -1,6 +1,5 @@
-const CONSTANTS = {
-  humanOffset: 1,
-};
+// utility function to sort numbers in descending order
+const sortDescending = (numbers: number[]) => numbers.sort((a, b) => b - a);
 
 /**
  * T is an object containing precalculated number of milliseconds
@@ -90,15 +89,17 @@ export const timeDiff = (now: number) => (historicDate: Date) =>
  * @returns {number} Number of days since supplied date
  */
 export const daysSince = (when: Date, now: number = Date.now()) =>
-  Math.floor(timeDiff(now)(when) / T.day) + CONSTANTS.humanOffset;
+  Math.floor(timeDiff(now)(when) / T.day);
 
 /**
  * @function
  * @name daysFrom
  * @param {Date} when Date to calculate from now
+ * @param {number} [now]
  * @returns {number} Number of days until "when" date
  */
-export const daysFrom = (when: Date) => Math.abs(daysSince(when));
+export const daysFrom = (when: Date, now?: number) =>
+  Math.abs(daysSince(when, now));
 
 /**
  * @function
@@ -111,9 +112,17 @@ export const daysBetween = (from: string, to: string): number | null => {
   if (invalidDateString(from) || invalidDateString(to)) {
     return null;
   }
+
+  // convert date strings to ECMA epoch numbers
+  const b = t(to) ?? 0;
+  const a = t(from) ?? 0;
+
+  // sort date numbers into descending order for subtraction
+  const [prev, next] = sortDescending([a, b]);
+
   // using nullish coalescing since t can return "undefined". This seems very
   // unlikely since we are peforming the check for invalidDateStrings above.
-  return (t(to) ?? 0 - (t(from) ?? 0)) / T.day;
+  return Math.round(Math.abs((prev - next) / T.day));
 };
 
 const TIME = Object.assign(T, {

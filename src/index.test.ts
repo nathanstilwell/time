@@ -1,4 +1,12 @@
-import TIME, { invalidDateString, d, t, timeDiff, daysSince } from "./index";
+import TIME, {
+  invalidDateString,
+  d,
+  t,
+  timeDiff,
+  daysSince,
+  daysFrom,
+  daysBetween,
+} from "./index";
 
 const { dateFromString, timeFromString } = TIME;
 
@@ -166,20 +174,55 @@ describe("Comparing functions", () => {
     const now = t("26 MAY 2022") || 0;
 
     test("should calculate days between two valid dates", () => {
-      const then = d("05 SEP 1979") || new Date(); // 15629
+      const then = d("21 MAY 2022") || new Date();
       const result = daysSince(then, now);
-      const expected = 15605;
+      const expected = 5;
       expect(result).toBe(expected);
     });
 
     test("should return negative days for a future date", () => {
-      const then = d("30 JUN 2022") || new Date();
+      const then = d("31 MAY 2022") || new Date();
       const result = daysSince(then, now);
-      const expected = -34;
+      const expected = -5;
       expect(result).toBe(expected);
     });
   });
 
-  // describe("daysFrom fn", () => {});
-  // describe("daysBetween fn", () => {});
+  describe("daysFrom fn", () => {
+    const now = t("02 JUN 2022") || 0;
+
+    test("should calculate number of days from a valid date", () => {
+      const then = d("30 JUN 2022") || new Date();
+      const result = daysFrom(then, now);
+      const expected = 28;
+      expect(result).toBe(expected);
+    });
+
+    test("should return positive numbers for future days", () => {
+      const then = d("31 MAY 2022") || new Date();
+      const result = daysFrom(then, now);
+      const expected = 2;
+      expect(result).toBe(expected);
+    });
+  });
+
+  describe("daysBetween fn", () => {
+    test("should return the number of days between two date strings", () => {
+      const result = daysBetween("31 MAY 2022", "30 JUN 2022");
+      const expected = 30;
+      expect(result).toBe(expected);
+    });
+
+    test("should return null if a date is invalid", () => {
+      const result = daysBetween("nopenopenope", "30 JUN 2022");
+      const expected = null;
+      expect(result).toBe(expected);
+    });
+
+    test("should return the correct number of days despite order", () => {
+      const result = daysBetween("23 MAY 2022", "13 NOV 2021");
+      const expected = 191;
+      expect(result).toBe(expected);
+    });
+  });
 });
