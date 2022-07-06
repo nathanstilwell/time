@@ -1,13 +1,14 @@
 {
   "name": "@nathanstilwell/time",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Utility for basic time calculations",
   "main": "dist/index.js",
   "scripts": {
-    "test": "jest",
-    "test:watch": "jest --watch",
     "build": "tsc --build --verbose",
-    "lint": "eslint --quiet src/**/*.ts"
+    "lint": "eslint --quiet src/**/*.ts",
+    "prepublish": "tsc --build",
+    "test": "jest",
+    "test:watch": "jest --watch"
   },
   "repository": {
     "type": "git",
