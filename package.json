@@ -1,6 +1,6 @@
 {
   "name": "@nathanstilwell/time",
-  "version": "0.1.2",
+  "version": "0.2.0",
   "description": "Utility for basic time calculations",
   "main": "dist/index.js",
   "files": [
