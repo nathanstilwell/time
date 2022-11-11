@@ -1,0 +1,42 @@
+name: Publish to npm on merge
+
+on:
+  pull_request:
+    paths:
+      - 'src/'
+      - package.json
+      - package-lock.json
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout Code
+      uses: actions/checkout@v3
+
+    - name: Setup NodeJS
+      uses: actions/setup-node@v3
+      with:
+        node-version: 16
+        cache: 'npm'
+      env:
+        NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+    - name: Check if version is published
+      id: version-check
+      shell: bash
+      run: |
+        npm info @nathanstilwell/time@$(node -pe "require('./package.json').version") > /dev/null 2>&1;
+        echo "version_not_exists=$?" >> $GITHUB_OUTPUT
+
+    - name: Build
+      if: steps.version_check.output.version_not_exists
+      run: |
+        npm install
+        npm run Build
+
+    - name: Publish
+      if: steps.version_check.output.version_not_exists
+      run: |
+        npm publish --access public --tag testing --dry-run
+
