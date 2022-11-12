@@ -25,18 +25,26 @@ jobs:
     - name: Check if version is published
       id: version-check
       shell: bash
+      continue-on-error: true
       run: |
-        npm info @nathanstilwell/time@$(node -pe "require('./package.json').version") > /dev/null 2>&1;
-        echo "version_not_exists=$?" >> $GITHUB_OUTPUT
+        PACKAGE_VERSION=$(cat ./package.json | jq -r ".version");
+        VERSIONS=$(npm view @nathanstilwell/time versions)
+        if [[ $VERSIONS == *"$PACKAGE_VERSION"* ]]; then
+          echo "published=yes" >> $GITHUB_OUTPUT
+          echo
+          echo "🛑 Cluster UI package version $PACKAGE_VERSION is already published"
+          echo "to npm. Publishing step should be skipped. 🛑"
+        else
+          echo "published=no" >> $GITHUB_OUTPUT
+        fi
 
     - name: Build
-      if: steps.version_check.output.version_not_exists
       run: |
-        npm install
-        npm run Build
+        npm install;
+        npm run build;
 
     - name: Publish
-      if: steps.version_check.output.version_not_exists
+      if: steps.version-check.outputs.published == 'no'
       run: |
         npm publish --access public --tag testing --dry-run
 
